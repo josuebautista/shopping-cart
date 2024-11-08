@@ -1,10 +1,16 @@
+import Products from './components/Products'
+import Header from './components/Header'
+import Footer from './components/Footer'
+
 
 function App() {
 
   return (
-    <main>
-      <h1>Shopping Cart</h1>
-    </main>
+    <>
+      <Header />
+      <Products />
+      <Footer />
+    </>
   )
 }
 
