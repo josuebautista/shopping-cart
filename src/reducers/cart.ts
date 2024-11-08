@@ -1,13 +1,17 @@
 import {
   Product,
   ProductCart,
-  CartActionTypes,
-  INITIAL_STATE
-} from "../../global";
+  CartActionTypes
+  // @ts-ignore
+} from "../../global.d.ts";
 
 interface CartActionProps {
   type: string;
   payload?: Product;
+}
+
+const updateLocalStorage = (state: ProductCart[] | []) => {
+  window.localStorage.setItem('cart', JSON.stringify(state))
 }
 
 export const cartReducer = (state: ProductCart[], action: CartActionProps) => {
@@ -24,13 +28,15 @@ export const cartReducer = (state: ProductCart[], action: CartActionProps) => {
         newState[productInCartIndex].quantity += 1
         return newState
       }
-      return [
+      const newState = [
         ...state,
         {
           ...actionPayload, // product
           quantity: 1,
         }
       ]
+      updateLocalStorage(newState)
+      return newState
     }
     case CartActionTypes.REMOVE_FROM_CART: {
       if (actionPayload === undefined) return state
@@ -40,14 +46,19 @@ export const cartReducer = (state: ProductCart[], action: CartActionProps) => {
       if (productInCartIndex >= 0 && state[productInCartIndex].quantity > 1) {
         const newState = structuredClone(state)
         newState[productInCartIndex].quantity -= 1
+        updateLocalStorage(newState)
         return newState
       }
-      return state.filter(item => item.id !== id)
+      const newState = state.filter(item => item.id !== id)
+      updateLocalStorage(newState)
+      return newState
     }
     case CartActionTypes.CLEAR_CART: {
-      return INITIAL_STATE
+      updateLocalStorage([])
+      return []
     }
     default: {
+      updateLocalStorage(state)
       return state
     }
   }

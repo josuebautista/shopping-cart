@@ -1,5 +1,12 @@
 import { createContext, useReducer } from 'react';
-import { Product, ProductCart, CartActionTypes, INITIAL_STATE } from '../../global';
+import {
+  Product,
+  ProductCart,
+  CartActionTypes,
+  INITIAL_STATE
+}
+  // @ts-ignore
+  from '../../global.d.ts';
 import { cartReducer } from '../reducers/cart';
 
 
@@ -14,8 +21,10 @@ interface CartContextType {
   clearCart: () => void;
 }
 
+const getLocalStorageCart = JSON.parse(window.localStorage.getItem('cart') || JSON.stringify(INITIAL_STATE))
+
 export function useCartReducer() {
-  const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE)
+  const [state, dispatch] = useReducer(cartReducer, getLocalStorageCart)
 
   const addToCart = (product: Product) => dispatch({
     type: CartActionTypes.ADD_TO_CART,
