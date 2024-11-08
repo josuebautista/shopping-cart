@@ -16,8 +16,8 @@ If you are developing a production application, we recommend updating the config
 ## Intall the dependencies
 ```bash
   bun install
-```bash
+```
 ## Run the project
 ```bash
   bun run dev
-```bash
+```
